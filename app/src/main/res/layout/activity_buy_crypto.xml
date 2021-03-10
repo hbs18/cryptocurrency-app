@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BuyCryptoActivity">
+
+    <io.material.rally_line_chart.RallyLineGraphChart
+        android:id="@+id/rallyLine"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_gravity="center"
+        app:barColor="@color/cardview_dark_background"
+        app:curveBorderColor="@color/cardview_dark_background"
+        app:curveFillColor="?attr/colorSurface"
+        app:curveTopMargin="@dimen/spacing_large"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textViewBuyTitle"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="How much of (crypto) do you want to buy?"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.727"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.395" />
+
+    <Button
+        android:id="@+id/buttonBuy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="Buy"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.894"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.54" />
+
+    <EditText
+        android:id="@+id/editTextNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.154"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.541" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="228dp"
+        android:columnCount="2"
+        android:rowCount="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonBuy"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cryptoDetailsPriceCard"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="8dp"
+            app:cardElevation="3dp"
+            app:cardCornerRadius="3dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvName"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginStart="4dp"
+                    android:text="Bitcoin"
+                    style="@style/Subtitle1"
+                    />
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/testProgressBar"></ProgressBar>
+                <TextView
+                    android:id="@+id/text_btcPrice"
+                    android:layout_below="@id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$12,132.49"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginStart="4dp"
+                    style="@style/H3Heading"
+                    android:textSize="32dp"
+                     />
+            </RelativeLayout>
+
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cryptoDetailsTickerCard"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="8dp"
+            app:cardElevation="3dp"
+            app:cardCornerRadius="3dp">
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tickerCardTitle"
+                    android:text="Ticker"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginStart="4dp"
+                    style="@style/Subtitle1"
+                    />
+                <TextView
+                    android:id="@+id/text_tickerCard"
+                    android:layout_below="@id/tickerCardTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+1.58"
+                    style="@style/H3Heading"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginStart="4dp"
+                    android:textSize="32dp"
+                    />
+            </RelativeLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cryptoDetailsCard3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="8dp"
+            app:cardElevation="3dp"
+            app:cardCornerRadius="3dp">>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/card3TitleLayout">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/card3CardTitle"
+                        android:text="Volume"
+                        style="@style/Subtitle1"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:layout_marginStart="4dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-8.47%"
+                        android:id="@+id/card3Subtitle"
+                        style="@style/Body2"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:layout_marginStart="4dp"
+                        />
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/card3Text"
+                    android:layout_below="@id/card3TitleLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1.837.142$"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginStart="4dp"
+                    style="@style/H3Heading"
+                    android:textSize="20dp"
+                    />
+            </RelativeLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cryptoDetailsCard4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="8dp"
+            app:cardElevation="3dp"
+            app:cardCornerRadius="3dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/card4TitleLayout">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/card4CardTitle"
+                        android:text="Mkt. cap change"
+                        style="@style/Subtitle1"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:layout_marginStart="4dp"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-8.47%"
+                        android:id="@+id/card4Subtitle"
+                        style="@style/Body2"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:layout_marginStart="4dp"
+                        />
+
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/card4Text"
+                    android:layout_below="@id/card4TitleLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="+1.58"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginStart="4dp"
+                    style="@style/H3Heading"
+                    android:textSize="20dp"
+                    />
+            </RelativeLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </GridLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

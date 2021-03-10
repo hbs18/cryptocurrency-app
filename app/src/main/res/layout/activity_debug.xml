@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".debug">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/removeMoneyButton"
+        android:onClick="removeMoney"
+        android:text="Remove money"
+        android:layout_centerInParent="true"></Button>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/removeBTCButton"
+        android:onClick="removeBTC"
+        android:text="Remove BTC"
+        android:layout_below="@+id/removeMoneyButton"
+        android:layout_centerInParent="true"></Button>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/setMoney100Button"
+        android:text="Set $ to 100"
+        android:onClick="setMoneyTo100"
+        android:layout_below="@+id/removeBTCButton"
+        android:layout_centerInParent="true"></Button>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/removeEthButton"
+        android:text="Remove ETH"
+        android:onClick="removeETH"
+        android:layout_below="@+id/setMoney100Button"
+        android:layout_centerInParent="true"></Button>
+</RelativeLayout>

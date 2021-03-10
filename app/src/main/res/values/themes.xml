@@ -1,0 +1,75 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.FragmentTest" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#36F0AB</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+
+    </style>
+
+    <style name="CondensedBase" parent="Theme.FragmentTest">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="Subtitle1" parent="CondensedBase">
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0.035625</item>
+    </style>
+
+    <style name="Subtitle2" parent="CondensedBase">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.035</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+
+    <style name="Body2" parent="CondensedBase">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.1875</item>
+        <item name="android:fontFamily">sans-serif-condensed-light</item>
+    </style>
+
+    <style name="Caption" parent="Subtitle2">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Button" parent="CondensedBase">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.2</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="BodyTight" parent="Body2">
+        <item name="android:letterSpacing">0.0625</item>
+    </style>
+
+    <style name="EczarBase" parent="Theme.FragmentTest">
+        <item name="android:fontFamily">@font/eczar</item>
+    </style>
+
+    <style name="H3Heading" parent="EczarBase">
+        <item name="android:letterSpacing">0.0357</item>
+        <item name="android:textSize">44sp</item>
+        <item name="android:fontWeight">600</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="FadedH3Heading" parent="H3Heading">
+        <item name="android:alpha">0.2</item>
+    </style>
+
+    <style name="Body1" parent="EczarBase">
+        <item name="android:textSize">18sp</item>
+        <item name="android:letterSpacing">0.16</item>
+    </style>
+</resources>

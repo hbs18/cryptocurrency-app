@@ -1,0 +1,2 @@
+include ':app', ':rally_line_chart', ':design_system'
+rootProject.name = "Fragment Test"
