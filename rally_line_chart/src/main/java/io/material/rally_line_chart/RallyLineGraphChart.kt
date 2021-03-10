@@ -139,6 +139,7 @@ class RallyLineGraphChart : View {
     var endX: Float
     var endY: Float
 
+    //for (i in 0 until VERTICAL_BARS) {
     for (i in 0 until VERTICAL_BARS) {
       startX += barWidth + barMargin
       endX = startX
@@ -147,7 +148,11 @@ class RallyLineGraphChart : View {
       } else {
         largeBarHeight
       }
-      canvas?.drawLine(startX, startY, endX, endY, barPaint)
+      if (i % INDEX_OF_LARGE_BAR == 2){
+        canvas?.drawLine(startX, startY, endX, endY+100, barPaint)
+      }
+      canvas?.drawLine(width.toFloat(),height.toFloat(),0f,height.toFloat(),barPaint)
+      canvas?.drawLine(0f,height.toFloat(),0f,0f,barPaint)
     }
   }
 
@@ -205,7 +210,8 @@ class RallyLineGraphChart : View {
     }
   }
 
-  private fun getLargeBarHeight() = height / 3 * 2f
+ // private fun getLargeBarHeight() = height / 3 * 2f
+ private fun getLargeBarHeight() = height / 1.5f
 
   fun addDataPoints(data: List<DataPoint>) {
     //do calculation in worker thread // Note: You should use some safe thread mechanism
@@ -303,9 +309,9 @@ class RallyLineGraphChart : View {
   }
 
   companion object {
-    private const val INDEX_OF_LARGE_BAR = 8
-    private const val VERTICAL_BARS =
-      (INDEX_OF_LARGE_BAR * INDEX_OF_LARGE_BAR) + 6 // add fixed bars size
+    private const val INDEX_OF_LARGE_BAR = 7 //8
+    //private const val VERTICAL_BARS = (INDEX_OF_LARGE_BAR * INDEX_OF_LARGE_BAR) + 6 // add fixed bars size
+    private const val VERTICAL_BARS = (INDEX_OF_LARGE_BAR * INDEX_OF_LARGE_BAR)
     private const val CURVE_BOTTOM_MARGIN = 32f
 
   }
