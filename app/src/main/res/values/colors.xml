@@ -43,4 +43,7 @@
     <color name="rally_blue_700">#0C68FA</color>
     <color name="rally_blue_200">#63D6FE</color>
     <color name="rally_blue_100">#A4EFFF</color>
+
+    <color name="bitcoin_color">#FD9C12</color>
+    <color name="ethereum_color">#716B94</color>
 </resources>

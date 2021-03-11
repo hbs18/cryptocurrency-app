@@ -15,6 +15,7 @@
         app:curveBorderColor="@color/cardview_dark_background"
         app:curveFillColor="?attr/colorSurface"
         app:curveTopMargin="@dimen/spacing_large"
+        android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

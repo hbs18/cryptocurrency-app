@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import cf.hbs18.fragmenttest.network.EthApi
 import cf.hbs18.fragmenttest.network.MarsApi
+import cf.hbs18.fragmenttest.network.SparklineApi
+import cf.hbs18.fragmenttest.network.sevenDaysAgo
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import io.material.rally_line_chart.DataPoint
@@ -39,18 +41,20 @@ class BuyCryptoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_buy_crypto)
         val rallyLine = findViewById<RallyLineGraphChart>(R.id.rallyLine)
         rallyLine.setCurveBorderColor(R.color.rally_blue)
-        rallyLine.addDataPoints(getTestPoints())
+        //rallyLine.addDataPoints(getTestPoints())
         message = intent.getStringExtra(EXTRA_MESSAGE).toString()
         setTitle("Buy cryptocurrency")
         if (message == "btc"){
             findViewById<TextView>(R.id.textViewBuyTitle).text="How much $ of BTC do you want to buy?"
             setTitle("Buy Bitcoin")
             updateViewsBtc()
+            sparklineBtc()
         }
         else if(message == "eth"){
             findViewById<TextView>(R.id.textViewBuyTitle).text="How much $ of ETH do you want to buy?"
             setTitle("Buy Ethereum")
             updateViewsEth()
+            sparklineEth()
         }
 
 
@@ -345,22 +349,92 @@ class BuyCryptoActivity : AppCompatActivity() {
     }
 
 
-    fun getTestPoints(): MutableList<DataPoint> {
-        val list = mutableListOf<DataPoint>()
-        list.add(DataPoint(calculatePointForGraph(47183.04)))   //skroz s desna point, mar 05
-        list.add(DataPoint(calculatePointForGraph(50522.30)))
-        list.add(DataPoint(calculatePointForGraph(48415.82)))
-        list.add(DataPoint(calculatePointForGraph(49612.11)))
-        list.add(DataPoint(calculatePointForGraph(45159.50)))
-        list.add(DataPoint(calculatePointForGraph(46194.02)))
-        list.add(DataPoint(calculatePointForGraph(47180.46)))   //skroz s ljeva point, feb 26
-        return list
-    }
-
-    fun calculatePointForGraph(number: Double): Float{
-        val max = 50522.30
-        val min = 45159.50
+    fun calculatePointForGraph(number: Double, max: Double, min: Double): Float{
         val percentage = (number - min) / (max - min)
         return percentage.toFloat()
+    }
+
+    val queryThing = sevenDaysAgo() +"T00:00:00Z"
+
+    fun sparklineBtc(){
+        SparklineApi.retrofitService.getProperties(queryThing).enqueue(
+            object: Callback<String> {
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                }
+
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    //findViewById<TextView>(R.id.textView).text=response.body()
+                    if(response.isSuccessful){
+                        val responseBody = response.body().toString()
+                        val parsedResponseBody= Gson().fromJson(responseBody, sparklineData::class.java)
+                        val pricesMax = parsedResponseBody[0].prices.max()
+                        val pricesMin = parsedResponseBody[0].prices.min()
+                        val list = mutableListOf<DataPoint>()
+                        if (pricesMax != null) {
+                            if (pricesMin != null) {
+                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[0].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[1].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[2].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[3].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[4].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[5].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[6].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                            }
+                        }
+                        val rallyLine = findViewById<RallyLineGraphChart>(R.id.rallyLine)
+                        rallyLine.setCurveBorderColor(R.color.bitcoin_color)
+                        rallyLine.addDataPoints(list)
+                    }
+                    else{
+                        val toast = Toast.makeText(getApplicationContext(),
+                            "Error code "+response.code().toString(),
+                            Toast.LENGTH_SHORT);
+                        toast.show()
+                        findViewById<TextView>(R.id.sparklineDebugText).text = SparklineApi.retrofitService.getProperties((queryThing)).request().url().toString()
+                    }
+                }
+            })
+        return
+    }
+
+    fun sparklineEth(){
+        SparklineApi.retrofitService.getProperties(queryThing).enqueue(
+            object: Callback<String> {
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                }
+
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    //findViewById<TextView>(R.id.textView).text=response.body()
+                    if(response.isSuccessful){
+                        val responseBody = response.body().toString()
+                        val parsedResponseBody= Gson().fromJson(responseBody, sparklineData::class.java)
+                        val pricesMax = parsedResponseBody[1].prices.max()
+                        val pricesMin = parsedResponseBody[1].prices.min()
+                        val list = mutableListOf<DataPoint>()
+                        if (pricesMax != null) {
+                            if (pricesMin != null) {
+                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[1].prices[0].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[1].prices[1].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[1].prices[2].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[1].prices[3].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[1].prices[4].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[1].prices[5].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[1].prices[6].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                            }
+                        }
+                        val rallyLine = findViewById<RallyLineGraphChart>(R.id.rallyLine)
+                        rallyLine.setCurveBorderColor(R.color.ethereum_color)
+                        rallyLine.addDataPoints(list)
+                    }
+                    else{
+                        val toast = Toast.makeText(getApplicationContext(),
+                            "Error code "+response.code().toString(),
+                            Toast.LENGTH_SHORT);
+                        toast.show()
+                        findViewById<TextView>(R.id.sparklineDebugText).text = SparklineApi.retrofitService.getProperties((queryThing)).request().url().toString()
+                    }
+                }
+            })
+        return
     }
 }
