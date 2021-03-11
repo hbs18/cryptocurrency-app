@@ -344,15 +344,6 @@ class BuyCryptoActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun setMoneyTo100(view: View){
-        val walletPref: SharedPreferences = getApplicationContext().getSharedPreferences("wallet", MODE_PRIVATE)
-        editor = walletPref.edit()
-        editor.putFloat("usd", 100F)
-        editor.apply()
-        Snackbar.make(view, "USD set to 100", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show()
-        return
-    }
 
     fun getTestPoints(): MutableList<DataPoint> {
         val list = mutableListOf<DataPoint>()

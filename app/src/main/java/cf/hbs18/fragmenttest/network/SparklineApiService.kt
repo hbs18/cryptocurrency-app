@@ -5,6 +5,7 @@ import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,21 +24,29 @@ private val retrofit = Retrofit.Builder()
 /**
  * A public interface that exposes the [getProperties] method
  */
-interface MarsApiService {
+//val oldDate = sevenDaysAgo()
+//val thingToGet = "sparkline?key=512830e2c32e1feb7c3887c7c76ef35a&ids=BTC,ETH&start="+oldDate+"T00%3A00%3A00Z"
+interface SparklineApiService {
     /**
      * Returns a Coroutine [List] of [MarsProperty] which can be fetched with await() if
      * in a Coroutine scope.
      * The @GET annotation indicates that the "realestate" endpoint will be requested with the GET
      * HTTP method
      */
-    @GET("ticker?key=512830e2c32e1feb7c3887c7c76ef35a&ids=BTC,ETH&interval=1d&convert=USD&per-page=100&page=1")
-    fun getProperties(): Call<String>
+    @GET("sparkline?key=512830e2c32e1feb7c3887c7c76ef35a&ids=BTC,ETH")
+    fun getProperties(@Query("start") queryString: String): Call<String>
 }
 
 /**
  * A public Api object that exposes the lazy-initialized Retrofit service
  */
-object MarsApi {
-    val retrofitService : MarsApiService by lazy { retrofit.create(MarsApiService::class.java) }
+object SparklineApi {
+    val retrofitService : SparklineApiService by lazy { retrofit.create(SparklineApiService::class.java) }
 }
 
+fun sevenDaysAgo(): String? {
+    val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd")
+    val cal: Calendar = Calendar.getInstance()
+    cal.add(Calendar.DATE, -7)
+    return dateFormat.format(cal.getTime())
+}

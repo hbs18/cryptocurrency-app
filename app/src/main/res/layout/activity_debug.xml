@@ -38,4 +38,11 @@
         android:onClick="removeETH"
         android:layout_below="@+id/setMoney100Button"
         android:layout_centerInParent="true"></Button>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sparklineDebugText"
+        android:text="Sparkline output text"
+        android:layout_below="@id/removeEthButton"></TextView>
 </RelativeLayout>
