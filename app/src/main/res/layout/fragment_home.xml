@@ -86,7 +86,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:background="#FD9C12" />
+            android:background="@color/bitcoin_color" />
 
     </LinearLayout>
 
@@ -160,7 +160,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:background="#716b94" />
+            android:background="@color/ethereum_color" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
