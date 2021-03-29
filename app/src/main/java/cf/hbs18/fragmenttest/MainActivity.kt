@@ -1,32 +1,26 @@
 package cf.hbs18.fragmenttest
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
+import androidx.core.widget.ContentLoadingProgressBar
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import cf.hbs18.fragmenttest.network.EthApi
 import cf.hbs18.fragmenttest.network.MarsApi
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.math.BigDecimal
-import java.math.RoundingMode
-import kotlin.random.Random
+
+
 const val EXTRA_MESSAGE = "cf.hbs18.studybuddy.MESSAGE"
 lateinit var editor: SharedPreferences.Editor
 lateinit var editorEth: SharedPreferences.Editor

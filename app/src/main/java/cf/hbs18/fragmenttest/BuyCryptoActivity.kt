@@ -13,10 +13,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import cf.hbs18.fragmenttest.network.EthApi
-import cf.hbs18.fragmenttest.network.MarsApi
-import cf.hbs18.fragmenttest.network.SparklineApi
-import cf.hbs18.fragmenttest.network.sevenDaysAgo
+import cf.hbs18.fragmenttest.network.*
+import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import io.material.rally_line_chart.DataPoint
@@ -355,9 +353,58 @@ class BuyCryptoActivity : AppCompatActivity() {
     }
 
     val queryThing = sevenDaysAgo() +"T00:00:00Z"
+    val queryThingThirtyDays = thirtyDaysAgo() + "T00:00:00Z"
+    val queryThing120Days = HundredAndTwentyDaysAgo() + "T00:00:00Z"
 
     fun sparklineBtc(){
         SparklineApi.retrofitService.getProperties(queryThing).enqueue(
+                object: Callback<String> {
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                    }
+
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        //findViewById<TextView>(R.id.textView).text=response.body()
+                        if(response.isSuccessful){
+                            val responseBody = response.body().toString()
+                            val parsedResponseBody= Gson().fromJson(responseBody, sparklineData::class.java)
+                            val pricesMax = parsedResponseBody[0].prices.max()
+                            val pricesMin = parsedResponseBody[0].prices.min()
+                            val list = mutableListOf<DataPoint>()
+                            if (pricesMax != null) {
+                                if (pricesMin != null) {
+                                    list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[0].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                    list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[1].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                    list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[2].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                    list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[3].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                    list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[4].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                    list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[5].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                    list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[6].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                }
+                            }
+                            val rallyLine = findViewById<RallyLineGraphChart>(R.id.rallyLine)
+                            rallyLine.setCurveBorderColor(R.color.bitcoin_color)
+                            rallyLine.resetDataPoints()
+                            rallyLine.addDataPoints(list)
+                            findViewById<Chip>(R.id.chip6).isChecked=false
+                            findViewById<Chip>(R.id.chip4).isChecked=false
+                            findViewById<Chip>(R.id.chip5).isChecked=true
+                            findViewById<Chip>(R.id.chip7).setText(pricesMin)
+                            findViewById<Chip>(R.id.chip8).setText(pricesMax)
+                        }
+                        else{
+                            val toast = Toast.makeText(getApplicationContext(),
+                                    "Error code "+response.code().toString(),
+                                    Toast.LENGTH_SHORT);
+                            toast.show()
+                            //findViewById<TextView>(R.id.sparklineDebugText).text = SparklineApi.retrofitService.getProperties((queryThing)).request().url().toString()
+                        }
+                    }
+                })
+        return
+    }
+
+    fun sparklineBtcMonth(){
+        SparklineApi.retrofitService.getProperties(queryThingThirtyDays).enqueue(
             object: Callback<String> {
                 override fun onFailure(call: Call<String>, t: Throwable) {
                 }
@@ -372,29 +419,101 @@ class BuyCryptoActivity : AppCompatActivity() {
                         val list = mutableListOf<DataPoint>()
                         if (pricesMax != null) {
                             if (pricesMin != null) {
-                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[0].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
-                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[1].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
-                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[2].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
-                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[3].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
-                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[4].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
-                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[5].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
-                                list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[6].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                for (i in 0..29){
+                                    list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[i].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                }
                             }
                         }
                         val rallyLine = findViewById<RallyLineGraphChart>(R.id.rallyLine)
                         rallyLine.setCurveBorderColor(R.color.bitcoin_color)
+                        rallyLine.resetDataPoints()
                         rallyLine.addDataPoints(list)
+                        findViewById<Chip>(R.id.chip4).isChecked=true
+                        findViewById<Chip>(R.id.chip5).isChecked=false
+                        findViewById<Chip>(R.id.chip6).isChecked=false
+                        findViewById<Chip>(R.id.chip7).setText(pricesMin)
+                        findViewById<Chip>(R.id.chip8).setText(pricesMax)
                     }
                     else{
                         val toast = Toast.makeText(getApplicationContext(),
                             "Error code "+response.code().toString(),
                             Toast.LENGTH_SHORT);
                         toast.show()
-                        findViewById<TextView>(R.id.sparklineDebugText).text = SparklineApi.retrofitService.getProperties((queryThing)).request().url().toString()
+                        //findViewById<TextView>(R.id.sparklineDebugText).text = SparklineApi.retrofitService.getProperties((queryThing)).request().url().toString()
                     }
                 }
             })
         return
+    }
+
+    fun sparklineBtc120Days(){
+        SparklineApi.retrofitService.getProperties(queryThing120Days).enqueue(
+                object: Callback<String> {
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                    }
+
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        //findViewById<TextView>(R.id.textView).text=response.body()
+                        if(response.isSuccessful){
+                            val responseBody = response.body().toString()
+                            val parsedResponseBody= Gson().fromJson(responseBody, sparklineData::class.java)
+                            val pricesMax = parsedResponseBody[0].prices.max()
+                            val pricesMin = parsedResponseBody[0].prices.min()
+                            val list = mutableListOf<DataPoint>()
+                            if (pricesMax != null) {
+                                if (pricesMin != null) {
+                                    for (i in 0..parsedResponseBody[0].prices.size-1){
+                                        list.add(DataPoint(calculatePointForGraph(parsedResponseBody[0].prices[i].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                    }
+                                }
+                            }
+                            val rallyLine = findViewById<RallyLineGraphChart>(R.id.rallyLine)
+                            rallyLine.setCurveBorderColor(R.color.bitcoin_color)
+                            rallyLine.resetDataPoints()
+                            rallyLine.addDataPoints(list)
+                            findViewById<Chip>(R.id.chip4).isChecked=false
+                            findViewById<Chip>(R.id.chip5).isChecked=false
+                            findViewById<Chip>(R.id.chip6).isChecked=true
+                            findViewById<Chip>(R.id.chip7).setText(pricesMin)
+                            findViewById<Chip>(R.id.chip8).setText(pricesMax)
+                        }
+                        else{
+                            val toast = Toast.makeText(getApplicationContext(),
+                                    "Error code "+response.code().toString(),
+                                    Toast.LENGTH_SHORT);
+                            toast.show()
+                            //findViewById<TextView>(R.id.sparklineDebugText).text = SparklineApi.retrofitService.getProperties((queryThing)).request().url().toString()
+                        }
+                    }
+                })
+        return
+    }
+
+    fun setYearGraph(view: View){
+        if (message == "btc"){
+            sparklineBtc120Days();
+        }
+        else if (message == "eth"){
+            sparklineEth120Days();
+        }
+    }
+
+    fun setMonthGraph(view: View){
+        if (message == "btc"){
+            sparklineBtcMonth();
+        }
+        else if (message == "eth"){
+            sparklineEthMonth();
+        }
+    }
+
+    fun setWeekGraph(view: View){
+        if (message == "btc"){
+            sparklineBtc()
+        }
+        else if (message == "eth"){
+            sparklineEth()
+        }
     }
 
     fun sparklineEth(){
@@ -424,17 +543,109 @@ class BuyCryptoActivity : AppCompatActivity() {
                         }
                         val rallyLine = findViewById<RallyLineGraphChart>(R.id.rallyLine)
                         rallyLine.setCurveBorderColor(R.color.ethereum_color)
+                        rallyLine.resetDataPoints()
                         rallyLine.addDataPoints(list)
+                        findViewById<Chip>(R.id.chip6).isChecked=false
+                        findViewById<Chip>(R.id.chip4).isChecked=false
+                        findViewById<Chip>(R.id.chip5).isChecked=true
+                        findViewById<Chip>(R.id.chip7).setText(pricesMin)
+                        findViewById<Chip>(R.id.chip8).setText(pricesMax)
                     }
                     else{
                         val toast = Toast.makeText(getApplicationContext(),
                             "Error code "+response.code().toString(),
                             Toast.LENGTH_SHORT);
                         toast.show()
-                        findViewById<TextView>(R.id.sparklineDebugText).text = SparklineApi.retrofitService.getProperties((queryThing)).request().url().toString()
+                        //findViewById<TextView>(R.id.sparklineDebugText).text = SparklineApi.retrofitService.getProperties((queryThing)).request().url().toString()
                     }
                 }
             })
+        return
+    }
+
+    fun sparklineEthMonth(){
+        SparklineApi.retrofitService.getProperties(queryThingThirtyDays).enqueue(
+                object: Callback<String> {
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                    }
+
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        //findViewById<TextView>(R.id.textView).text=response.body()
+                        if(response.isSuccessful){
+                            val responseBody = response.body().toString()
+                            val parsedResponseBody= Gson().fromJson(responseBody, sparklineData::class.java)
+                            val pricesMax = parsedResponseBody[1].prices.max()
+                            val pricesMin = parsedResponseBody[1].prices.min()
+                            val list = mutableListOf<DataPoint>()
+                            if (pricesMax != null) {
+                                if (pricesMin != null) {
+                                    for (i in 0..29){
+                                        list.add(DataPoint(calculatePointForGraph(parsedResponseBody[1].prices[i].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                    }
+                                }
+                            }
+                            val rallyLine = findViewById<RallyLineGraphChart>(R.id.rallyLine)
+                            rallyLine.setCurveBorderColor(R.color.ethereum_color)
+                            rallyLine.resetDataPoints()
+                            rallyLine.addDataPoints(list)
+                            findViewById<Chip>(R.id.chip6).isChecked=false
+                            findViewById<Chip>(R.id.chip4).isChecked=true
+                            findViewById<Chip>(R.id.chip5).isChecked=false
+                            findViewById<Chip>(R.id.chip7).setText(pricesMin)
+                            findViewById<Chip>(R.id.chip8).setText(pricesMax)
+                        }
+                        else{
+                            val toast = Toast.makeText(getApplicationContext(),
+                                    "Error code "+response.code().toString(),
+                                    Toast.LENGTH_SHORT);
+                            toast.show()
+                            //findViewById<TextView>(R.id.sparklineDebugText).text = SparklineApi.retrofitService.getProperties((queryThing)).request().url().toString()
+                        }
+                    }
+                })
+        return
+    }
+
+    fun sparklineEth120Days(){
+        SparklineApi.retrofitService.getProperties(queryThing120Days).enqueue(
+                object: Callback<String> {
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                    }
+
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        //findViewById<TextView>(R.id.textView).text=response.body()
+                        if(response.isSuccessful){
+                            val responseBody = response.body().toString()
+                            val parsedResponseBody= Gson().fromJson(responseBody, sparklineData::class.java)
+                            val pricesMax = parsedResponseBody[1].prices.max()
+                            val pricesMin = parsedResponseBody[1].prices.min()
+                            val list = mutableListOf<DataPoint>()
+                            if (pricesMax != null) {
+                                if (pricesMin != null) {
+                                    for (i in 0..parsedResponseBody[1].prices.size-1){
+                                        list.add(DataPoint(calculatePointForGraph(parsedResponseBody[1].prices[i].toDouble(), pricesMax.toDouble(), pricesMin.toDouble())))
+                                    }
+                                }
+                            }
+                            val rallyLine = findViewById<RallyLineGraphChart>(R.id.rallyLine)
+                            rallyLine.setCurveBorderColor(R.color.ethereum_color)
+                            rallyLine.resetDataPoints()
+                            rallyLine.addDataPoints(list)
+                            findViewById<Chip>(R.id.chip4).isChecked=false
+                            findViewById<Chip>(R.id.chip5).isChecked=false
+                            findViewById<Chip>(R.id.chip6).isChecked=true
+                            findViewById<Chip>(R.id.chip7).setText(pricesMin)
+                            findViewById<Chip>(R.id.chip8).setText(pricesMax)
+                        }
+                        else{
+                            val toast = Toast.makeText(getApplicationContext(),
+                                    "Error code "+response.code().toString(),
+                                    Toast.LENGTH_SHORT);
+                            toast.show()
+                            //findViewById<TextView>(R.id.sparklineDebugText).text = SparklineApi.retrofitService.getProperties((queryThing)).request().url().toString()
+                        }
+                    }
+                })
         return
     }
 }

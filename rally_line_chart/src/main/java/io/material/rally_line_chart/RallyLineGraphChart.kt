@@ -297,7 +297,7 @@ class RallyLineGraphChart : View {
     }
   }
 
-  private fun resetDataPoints() {
+  fun resetDataPoints() {
     this.data.clear()
     points.clear()
     conPoint1.clear()

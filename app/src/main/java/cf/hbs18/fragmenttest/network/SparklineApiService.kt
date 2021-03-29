@@ -50,3 +50,18 @@ fun sevenDaysAgo(): String? {
     cal.add(Calendar.DATE, -7)
     return dateFormat.format(cal.getTime())
 }
+
+fun thirtyDaysAgo(): String? {
+    val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd")
+    val cal: Calendar = Calendar.getInstance()
+    cal.add(Calendar.DATE, -30)
+    return dateFormat.format(cal.getTime())
+}
+
+fun HundredAndTwentyDaysAgo(): String? {
+    val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd")
+    val cal: Calendar = Calendar.getInstance()
+    cal.add(Calendar.DATE, -60)
+    return dateFormat.format(cal.getTime())
+}
+
