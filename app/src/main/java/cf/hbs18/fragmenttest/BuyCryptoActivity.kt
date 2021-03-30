@@ -33,10 +33,14 @@ var jsonShit: String? = null
 var attempts=0
 var eth_price: Double = 0.0
 var jsonShitEth: String? = null
+lateinit var format2: NumberFormat
 class BuyCryptoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buy_crypto)
+        format2 = NumberFormat.getCurrencyInstance()
+        format2.setMaximumFractionDigits(2)
+        format2.setCurrency(Currency.getInstance("USD"))
         val rallyLine = findViewById<RallyLineGraphChart>(R.id.rallyLine)
         rallyLine.setCurveBorderColor(R.color.rally_blue)
         //rallyLine.addDataPoints(getTestPoints())
@@ -59,6 +63,8 @@ class BuyCryptoActivity : AppCompatActivity() {
 
 
     }
+
+
 
 
 
@@ -357,6 +363,7 @@ class BuyCryptoActivity : AppCompatActivity() {
     val queryThing120Days = HundredAndTwentyDaysAgo() + "T00:00:00Z"
 
     fun sparklineBtc(){
+
         SparklineApi.retrofitService.getProperties(queryThing).enqueue(
                 object: Callback<String> {
                     override fun onFailure(call: Call<String>, t: Throwable) {
@@ -388,8 +395,12 @@ class BuyCryptoActivity : AppCompatActivity() {
                             findViewById<Chip>(R.id.chip6).isChecked=false
                             findViewById<Chip>(R.id.chip4).isChecked=false
                             findViewById<Chip>(R.id.chip5).isChecked=true
-                            findViewById<Chip>(R.id.chip7).setText(pricesMin)
-                            findViewById<Chip>(R.id.chip8).setText(pricesMax)
+                            if (pricesMin != null) {
+                                findViewById<TextView>(R.id.text_minprice).text="Low = "+format2.format(pricesMin.toDouble())
+                            }
+                            if (pricesMax != null) {
+                                findViewById<TextView>(R.id.text_maxprice).text="High = "+format2.format(pricesMax.toDouble())
+                            }
                         }
                         else{
                             val toast = Toast.makeText(getApplicationContext(),
@@ -431,8 +442,12 @@ class BuyCryptoActivity : AppCompatActivity() {
                         findViewById<Chip>(R.id.chip4).isChecked=true
                         findViewById<Chip>(R.id.chip5).isChecked=false
                         findViewById<Chip>(R.id.chip6).isChecked=false
-                        findViewById<Chip>(R.id.chip7).setText(pricesMin)
-                        findViewById<Chip>(R.id.chip8).setText(pricesMax)
+                        if (pricesMin != null) {
+                            findViewById<TextView>(R.id.text_minprice).text="Low = "+format2.format(pricesMin.toDouble())
+                        }
+                        if (pricesMax != null) {
+                            findViewById<TextView>(R.id.text_maxprice).text="High = "+format2.format(pricesMax.toDouble())
+                        }
                     }
                     else{
                         val toast = Toast.makeText(getApplicationContext(),
@@ -457,8 +472,8 @@ class BuyCryptoActivity : AppCompatActivity() {
                         if(response.isSuccessful){
                             val responseBody = response.body().toString()
                             val parsedResponseBody= Gson().fromJson(responseBody, sparklineData::class.java)
-                            val pricesMax = parsedResponseBody[0].prices.max()
-                            val pricesMin = parsedResponseBody[0].prices.min()
+                            val pricesMax = parsedResponseBody[0].prices.map { it.toDouble() }.max()
+                            val pricesMin = parsedResponseBody[0].prices.map { it.toDouble() }.min()
                             val list = mutableListOf<DataPoint>()
                             if (pricesMax != null) {
                                 if (pricesMin != null) {
@@ -474,8 +489,12 @@ class BuyCryptoActivity : AppCompatActivity() {
                             findViewById<Chip>(R.id.chip4).isChecked=false
                             findViewById<Chip>(R.id.chip5).isChecked=false
                             findViewById<Chip>(R.id.chip6).isChecked=true
-                            findViewById<Chip>(R.id.chip7).setText(pricesMin)
-                            findViewById<Chip>(R.id.chip8).setText(pricesMax)
+                            if (pricesMin != null) {
+                                findViewById<TextView>(R.id.text_minprice).text="Low = "+format2.format(pricesMin.toDouble())
+                            }
+                            if (pricesMax != null) {
+                                findViewById<TextView>(R.id.text_maxprice).text="High = "+format2.format(pricesMax.toDouble())
+                            }
                         }
                         else{
                             val toast = Toast.makeText(getApplicationContext(),
@@ -548,8 +567,12 @@ class BuyCryptoActivity : AppCompatActivity() {
                         findViewById<Chip>(R.id.chip6).isChecked=false
                         findViewById<Chip>(R.id.chip4).isChecked=false
                         findViewById<Chip>(R.id.chip5).isChecked=true
-                        findViewById<Chip>(R.id.chip7).setText(pricesMin)
-                        findViewById<Chip>(R.id.chip8).setText(pricesMax)
+                        if (pricesMin != null) {
+                            findViewById<TextView>(R.id.text_minprice).text="Low = "+format2.format(pricesMin.toDouble())
+                        }
+                        if (pricesMax != null) {
+                            findViewById<TextView>(R.id.text_maxprice).text="High = "+format2.format(pricesMax.toDouble())
+                        }
                     }
                     else{
                         val toast = Toast.makeText(getApplicationContext(),
@@ -591,8 +614,12 @@ class BuyCryptoActivity : AppCompatActivity() {
                             findViewById<Chip>(R.id.chip6).isChecked=false
                             findViewById<Chip>(R.id.chip4).isChecked=true
                             findViewById<Chip>(R.id.chip5).isChecked=false
-                            findViewById<Chip>(R.id.chip7).setText(pricesMin)
-                            findViewById<Chip>(R.id.chip8).setText(pricesMax)
+                            if (pricesMin != null) {
+                                findViewById<TextView>(R.id.text_minprice).text="Low = "+format2.format(pricesMin.toDouble())
+                            }
+                            if (pricesMax != null) {
+                                findViewById<TextView>(R.id.text_maxprice).text="High = "+format2.format(pricesMax.toDouble())
+                            }
                         }
                         else{
                             val toast = Toast.makeText(getApplicationContext(),
@@ -617,8 +644,8 @@ class BuyCryptoActivity : AppCompatActivity() {
                         if(response.isSuccessful){
                             val responseBody = response.body().toString()
                             val parsedResponseBody= Gson().fromJson(responseBody, sparklineData::class.java)
-                            val pricesMax = parsedResponseBody[1].prices.max()
-                            val pricesMin = parsedResponseBody[1].prices.min()
+                            val pricesMax = parsedResponseBody[1].prices.map { it.toDouble() }.max()
+                            val pricesMin = parsedResponseBody[1].prices.map { it.toDouble() }.min()
                             val list = mutableListOf<DataPoint>()
                             if (pricesMax != null) {
                                 if (pricesMin != null) {
@@ -634,8 +661,12 @@ class BuyCryptoActivity : AppCompatActivity() {
                             findViewById<Chip>(R.id.chip4).isChecked=false
                             findViewById<Chip>(R.id.chip5).isChecked=false
                             findViewById<Chip>(R.id.chip6).isChecked=true
-                            findViewById<Chip>(R.id.chip7).setText(pricesMin)
-                            findViewById<Chip>(R.id.chip8).setText(pricesMax)
+                            if (pricesMin != null) {
+                                findViewById<TextView>(R.id.text_minprice).text="Low = "+format2.format(pricesMin.toDouble())
+                            }
+                            if (pricesMax != null) {
+                                findViewById<TextView>(R.id.text_maxprice).text="High = "+format2.format(pricesMax.toDouble())
+                            }
                         }
                         else{
                             val toast = Toast.makeText(getApplicationContext(),

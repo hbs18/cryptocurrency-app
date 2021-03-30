@@ -61,7 +61,7 @@ fun thirtyDaysAgo(): String? {
 fun HundredAndTwentyDaysAgo(): String? {
     val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd")
     val cal: Calendar = Calendar.getInstance()
-    cal.add(Calendar.DATE, -60)
+    cal.add(Calendar.DATE, -365)
     return dateFormat.format(cal.getTime())
 }
 

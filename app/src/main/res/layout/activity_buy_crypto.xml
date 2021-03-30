@@ -11,17 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:layout_gravity="center"
+        android:layout_margin="8dp"
         app:barColor="@color/cardview_dark_background"
         app:curveBorderColor="@color/cardview_dark_background"
         app:curveFillColor="?attr/colorSurface"
         app:curveTopMargin="@dimen/spacing_large"
-        android:layout_margin="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.061" />
 
     <TextView
         android:id="@+id/textViewBuyTitle"
@@ -266,24 +266,24 @@
 
 
     <GridLayout
+        android:id="@+id/sparklineRangeSelectChips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/sparklineRangeSelectChips"
         android:columnCount="3"
         android:rowCount="1"
         app:layout_constraintBottom_toTopOf="@+id/textViewBuyTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/minmaxchips">
+        app:layout_constraintTop_toBottomOf="@+id/rallyLine">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
             android:checkable="true"
+            android:clickable="true"
             android:onClick="setYearGraph"
-            android:text="60 Days"
+            android:text="1 Year"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -294,8 +294,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
-            android:clickable="true"
             android:checkable="true"
+            android:clickable="true"
             android:onClick="setMonthGraph"
             android:text="30 Days"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -308,8 +308,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
-            android:clickable="true"
             android:checkable="true"
+            android:clickable="true"
             android:onClick="setWeekGraph"
             android:text="7 Days"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -320,48 +320,28 @@
     </GridLayout>
 
     <GridLayout
+        android:id="@+id/minmaxchips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/minmaxchips"
         android:columnCount="2"
         android:rowCount="1"
-        app:layout_constraintBottom_toTopOf="@+id/sparklineRangeSelectChips"
+        app:layout_constraintBottom_toTopOf="@+id/rallyLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rallyLine">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip7"
+        <TextView
+            android:id="@+id/text_minprice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:checkable="true"
-            android:onClick="setYearGraph"
-            android:text="Minimum: 1234"
-            app:chipStrokeColor="@color/rally_orange_300"
-            app:chipStrokeWidth="2dp"
-            app:chipBackgroundColor="@color/color_error"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginEnd="12dp"
+            tools:text="Min: 1234"></TextView>
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip8"
+        <TextView
+            android:id="@+id/text_maxprice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:clickable="true"
-            android:checkable="true"
-            android:onClick="setMonthGraph"
-            android:text="Maximum: 54321"
-            app:chipStrokeColor="@color/rally_green_500"
-            app:chipStrokeWidth="2dp"
-            app:chipBackgroundColor="@color/rally_green_700"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:text="Max: 54321"></TextView>
 
     </GridLayout>
 
